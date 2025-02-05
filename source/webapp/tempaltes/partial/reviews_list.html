@@ -1,0 +1,23 @@
+<div class="mt-4">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for review in reviews %}
+            <div class="col">
+                <div class="card mb-3 {% if not review.is_moderated %}text-bg-secondary{% endif %}">
+                    <div class="card-body">
+                        <h5 class="card-title"><a
+                                href="{% url 'accounts:profile' review.auther.pk %}">{{ review.auther.email }}</a></h5>
+                        <p class="card-text">{{ review.text }}</p>
+                        <p class="card-text">Оценка: {{ review.rating }}</p>
+                        {% if perms.webapp.change_review or review.auther == request.user %}
+                            <a href="{% url 'webapp:review_update' review.id %}" class="btn btn-primary">Изменить</a>
+                        {% endif %}
+
+                        {% if perms.webapp.delete_review or review.auther == request.user  %}
+                            <a href="#" class="btn btn-primary">Button</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
