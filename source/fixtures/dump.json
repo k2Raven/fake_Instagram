@@ -1,0 +1,58 @@
+[
+{
+  "model": "accounts.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$yAqeBdTEcKB8LUg9UqYLfm$oDgQtIqii3JejrSkQiAtcK4vNlUitOsKPXpU9hdyqoE=",
+    "last_login": "2025-02-05T15:59:05.290Z",
+    "is_superuser": false,
+    "username": "user1",
+    "first_name": "Aleksei",
+    "last_name": "Kuzmin",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-02-05T13:39:29.366Z",
+    "email": "user1@mail.ru",
+    "avatar": "avatars/2022-12-23_17.24.40.jpg",
+    "user_info": "",
+    "phone_number": "123421123",
+    "gender": "man",
+    "count_publications": 3,
+    "followers_count": 1,
+    "subscriptions_count": 0,
+    "groups": [],
+    "user_permissions": [],
+    "followers": [
+      [
+        "user2"
+      ]
+    ]
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$O5OBnnIYLXsbpZuaZpJ1RI$H65jlYEQDpU/EGKwieSnIpIc8Hf+XB72yPIy7KeKNus=",
+    "last_login": "2025-02-05T15:42:33.359Z",
+    "is_superuser": false,
+    "username": "user2",
+    "first_name": "User",
+    "last_name": "User",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-02-05T14:59:42.540Z",
+    "email": "user2@mail.ru",
+    "avatar": "avatars/1552932077_1.jpg",
+    "user_info": "qwdqw\r\ndqwdwqwd\r\ndqwdqw",
+    "phone_number": "123123123",
+    "gender": "man",
+    "count_publications": 0,
+    "followers_count": 0,
+    "subscriptions_count": 1,
+    "groups": [],
+    "user_permissions": [],
+    "followers": []
+  }
+}
+]
