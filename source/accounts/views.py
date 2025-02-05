@@ -1,9 +1,10 @@
 from django.db.models import Q
 
 from django.contrib.auth import login, get_user_model
-from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.contrib.auth.views import PasswordChangeView
-from django.shortcuts import redirect, reverse
+from django.shortcuts import redirect, reverse, get_object_or_404
+from django.views import View
 from django.views.generic import CreateView, DetailView, UpdateView, TemplateView
 
 from accounts.forms import CustomUserCreationForm, UserChangeForm, SearchUserForm
@@ -41,7 +42,7 @@ class UserDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        publications = Publication.objects.filter(author=self.object)
+        publications = Publication.objects.filter(author=self.object).order_by('-created_at')
         context['publications'] = publications
         return context
 
@@ -94,3 +95,20 @@ class SearchUsersView(TemplateView):
             )
         return context
 
+class SubscriptionView(LoginRequiredMixin, View):
+    def get(self, request, *args, pk, **kwargs):
+        user = get_object_or_404(User, pk=pk)
+        if user != request.user:
+            if request.user in user.followers.all():
+                user.followers.remove(request.user)
+                user.followers_count -= 1
+                user.save()
+                request.user.subscriptions_count -= 1
+                request.user.save()
+            else:
+                user.followers.add(request.user)
+                user.followers_count += 1
+                user.save()
+                request.user.subscriptions_count += 1
+                request.user.save()
+        return redirect('webapp:publication-list')
