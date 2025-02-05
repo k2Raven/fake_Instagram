@@ -11,4 +11,5 @@ class Publication(models.Model):
     comments_counter = models.PositiveIntegerField(default=0, verbose_name='Счетчик комментариев')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Время создание')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Время изменения')
+    users_liked = models.ManyToManyField(User, related_name='favorite_publications')
 
