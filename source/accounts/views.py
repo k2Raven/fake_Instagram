@@ -1,11 +1,13 @@
-from django.contrib.auth import authenticate, login, logout, get_user_model
-from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
-from django.contrib.auth.views import PasswordChangeView
-from django.core.paginator import Paginator
-from django.shortcuts import render, redirect, reverse
-from django.views.generic import CreateView, DetailView, UpdateView
+from django.db.models import Q
 
-from accounts.forms import CustomUserCreationForm, UserChangeForm
+from django.contrib.auth import login, get_user_model
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.auth.views import PasswordChangeView
+from django.shortcuts import redirect, reverse
+from django.views.generic import CreateView, DetailView, UpdateView, TemplateView
+
+from accounts.forms import CustomUserCreationForm, UserChangeForm, SearchUserForm
+from webapp.models import Publication
 
 User = get_user_model()
 
@@ -39,10 +41,8 @@ class UserDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # reviews = Review.objects.filter(auther=self.object)
-        # if not self.request.user.has_perm('webapp.see_all_reviews') and not self.object == self.request.user:
-        #     reviews = reviews.filter(is_moderated=True)
-        # context['reviews'] = reviews
+        publications = Publication.objects.filter(author=self.object)
+        context['publications'] = publications
         return context
 
 
@@ -64,3 +64,33 @@ class UserPasswordChangeView(PasswordChangeView):
 
     def get_success_url(self):
         return reverse('accounts:profile', kwargs={'pk': self.request.user.pk})
+
+
+
+class SearchUsersView(TemplateView):
+    template_name = 'search_users.html'
+
+    def get_search_form(self):
+        return SearchUserForm(self.request.GET)
+
+    def get_search_value(self):
+        if self.search_form.is_valid():
+            return self.search_form.cleaned_data['search']
+
+    def dispatch(self, request, *args, **kwargs):
+        self.search_form = self.get_search_form()
+        self.search_value = self.get_search_value()
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search_form'] = self.search_form
+        if self.search_value:
+            context['users'] = User.objects.filter(
+                Q(first_name__icontains=self.search_value) |
+                Q(last_name__icontains=self.search_value) |
+                Q(email__icontains=self.search_value) |
+                Q(username__icontains=self.search_value)
+            )
+        return context
+

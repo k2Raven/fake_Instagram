@@ -1,1 +1,1 @@
-from .publication_views import PublicationListView
+from .publication_views import PublicationListView, PublicationCreateView

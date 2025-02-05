@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Поиск пользователй
+{% endblock %}
+
+{% block menu %}
+{% endblock %}
+
+{% block content %}
+    <div class="d-flex justify-content-center align-items-center">
+        <form class="row g-3" method="get">
+            <div class="col-auto">
+                <label for="{{ search_form.search.id_for_label }}" class="visually-hidden">Поиск</label>
+                {{ search_form.search }}
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary mb-3">Найти</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="row row-cols-1 ">
+        {% for user in users %}
+            <a class="col d-block text-decoration-none" href="{% url 'accounts:profile' user.id %}">
+                <div class="card mb-3">
+                    <div class="card-body d-flex ">
+                        <img src="{{ user.avatar.url }}" class="rounded-circle" style="width: 50px; height: 50px" alt="">
+                        <p class="my-auto ms-3 text-decoration-none">{{ user.username }}</p>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+
+{% endblock %}

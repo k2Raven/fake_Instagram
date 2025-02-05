@@ -18,9 +18,9 @@
 {% block content %}
     <div class="card mb-3">
         <div class="row g-0">
-            {% if user_obj.profile.avatar %}
+            {% if user_obj.avatar %}
                 <div class="col-md-4">
-                    <img src="{{ user_obj.profile.avatar.url }}" class="img-fluid rounded-start" alt="...">
+                    <img src="{{ user_obj.avatar.url }}" class="img-fluid rounded-start" alt="...">
                 </div>
             {% endif %}
             <div class="col-md-8">
@@ -34,14 +34,19 @@
 
                     <p class="card-text">Фамилия: {{ user_obj.last_name }}</p>
 
-                    <p class="card-text">Дата рождения: {{ user_obj.profile.birth_date|date:'d.m.Y' }}</p>
+                    <p class="card-text">Телефон: {{ user_obj.phone_number }}</p>
 
                     <p class="card-text">Почта: {{ user_obj.email }}</p>
+
+                    <p class="card-text">{{ user_obj.user_info }}</p>
+
+                    <p class="card-text">Количество публикаций: {{ user_obj.count_publications }}</p>
+
 
                 </div>
             </div>
         </div>
     </div>
 
-{% include 'partial/reviews_list.html' %}
+{% include 'partial/publication_list.html' %}
 {% endblock %}

@@ -14,3 +14,4 @@ class User(AbstractUser):
     user_info = models.TextField(null=True, blank=True, verbose_name='Информация о пользователе')
     phone_number = models.CharField(max_length=20, null=True, blank=True, verbose_name='Номер телефона')
     gender = models.CharField(max_length=15, choices=GENDER_CHOICES, verbose_name="Пол")
+    count_publications = models.IntegerField(default=0, verbose_name='Количество публикаций')
