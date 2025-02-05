@@ -1,0 +1,1 @@
+from .publication_views import PublicationListView
