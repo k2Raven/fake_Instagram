@@ -1,3 +1,11 @@
 from django.contrib import admin
+from webapp.models import Publication, Comment
 
-# Register your models here.
+
+@admin.register(Publication)
+class PublicationAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    pass

@@ -1,1 +1,2 @@
-from   .publication import Publication
+from .publication import Publication
+from .comment import Comment

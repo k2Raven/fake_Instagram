@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Публикация{% endblock %}
+
+{% block content %}
+
+    <div class="card">
+        <div class="card-header d-flex">
+            <img src="{{ publication.author.avatar.url }}" class="rounded-circle" alt=""
+                 style="width: 50px; height: 50px;">
+            <p class="my-auto ms-2">{{ publication.author.username }}</p>
+        </div>
+        <img src="{{ publication.picture.url }}" class="card-img-top" alt="...">
+        <div class="card-body">
+            <p class="card-text">{{ publication.description }}</p>
+            <p class="card-text">Количество комментариев: {{ publication.comments_counter }}</p>
+            <a href="{% url 'webapp:like-publication' publication.pk %}" class="btn btn-primary">
+                {% if request.user in publication.users_liked.all %}
+                    Убрать лайк
+                {% else %}
+                    Поставить лайк
+                {% endif %}
+                ({{ publication.likes_counter }})
+            </a>
+
+        </div>
+        {% if request.user.is_authenticated %}
+            <div class="card-footer">
+                <form action="{% url 'webapp:comment-publication' publication.pk %}" method="post">
+                    {% include 'partial/form.html' with button_text="Создать" %}
+                </form>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="row mt-3 row-cols-3">
+        {% for comment in comments %}
+            <div class="col mb-3">
+                <div class="card" >
+                    <div class="card-body">
+                        <h5 class="card-title">{{ comment.author.username }}</h5>
+                        <h6 class="card-subtitle mb-2 text-body-secondary">{{ comment.created_at}}</h6>
+                        <p class="card-text">{{comment.text }}</p>
+                    </div>
+                </div>
+            </div>
+
+        {% endfor %}
+
+
+    </div>
+{% endblock %}

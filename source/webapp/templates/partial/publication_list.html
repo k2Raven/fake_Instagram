@@ -11,15 +11,18 @@
                     <img src="{{ publication.picture.url }}" class="card-img-top" alt="...">
                     <div class="card-body">
                         <p class="card-text">{{ publication.description }}</p>
+                        <p class="card-text">Количество комментариев: {{ publication.comments_counter }}</p>
+                    {% if request.user.is_authenticated %}
                         <a href="{% url 'webapp:like-publication' publication.pk %}" class="btn btn-primary">
                             {% if request.user in publication.users_liked.all %}
                                 Убрать лайк
                             {% else %}
                                 Поставить лайк
                             {% endif %}
-                           ({{ publication.likes_counter }})
-                        </a>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+
+                        </a> ({{ publication.likes_counter }})
+                    {% endif %}
+                        <a href="{% url 'webapp:publication-detail' publication.pk %}" class="btn btn-primary">подробнее</a>
                     </div>
                 </div>
             </div>

@@ -1,9 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views import View
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, DetailView
 
+from webapp.forms.comment import CommentForm
 from webapp.forms.publication import PublicationForm
 from webapp.models import Publication
 
@@ -16,6 +17,18 @@ class PublicationListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         subscriptions = self.request.user.subscriptions.all()
         return Publication.objects.filter(author__in=subscriptions).order_by('-created_at')
+
+
+class PublicationDetailView(LoginRequiredMixin, DetailView):
+    model = Publication
+    context_object_name = 'publication'
+    template_name = 'publication/detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = CommentForm()
+        context['comments'] = self.object.comments.order_by('created_at')
+        return context
 
 
 class PublicationCreateView(LoginRequiredMixin, CreateView):
